@@ -38,7 +38,7 @@ public class CustomView extends View {
         RecPaint.setStyle(Paint.Style.FILL);
         RecPaint.setAntiAlias(true);
         RecPaint.setColor(RecColor);
-        canvas.drawRect(0, 0, viewHeight, viewWidth, RecPaint);
+        canvas.drawRect(0, 0, viewWidth,viewHeight, RecPaint);
 
 
 

@@ -11,13 +11,46 @@
     tools:context=".MainActivity">
 
 
-
     <com.example.english.test.CustomView
         android:id="@+id/custView"
-        android:layout_width="match_parent"
-        android:layout_height="700px"
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
         custom:circleColor="#000000"
         custom:labelColor="#ffff66"
         android:fillViewport="true" />
+
+    <TextView android:text="GPS inactive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt1"
+        android:layout_below="@+id/custView"
+        android:layout_alignParentStart="true"
+        android:textSize="15sp"/>
+
+    <TextView android:text="Current speed: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt2"
+        android:layout_below="@+id/txt1"
+        android:layout_alignParentStart="true"
+        android:textSize="15sp"/>
+
+
+    <TextView android:text="Average speed: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt3"
+        android:layout_below="@+id/txt2"
+        android:layout_alignParentStart="true"
+        android:textSize="15sp"/>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/button1"
+        android:text="Start Tracking"
+        android:layout_below="@+id/txt3"
+        />
+
 
 </RelativeLayout>
