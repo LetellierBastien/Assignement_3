@@ -1,7 +1,14 @@
 package com.example.english.test;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +18,10 @@ public class MainActivity extends Activity {
 
     Button buttonStart;
     private boolean started=false;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    Location [] loca = new Location[100];
+    int sample=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +34,58 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 buttonStart.setText(started? "Start tracking":"Stop tracking");
                 started = !started;
+                if (started)
+                    gpsStart();
+                else
+                    gpsStop();
+
+
             }
             });
 
+         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+        locationListener = new LocationListener() {
+
+            public void onLocationChanged(Location location) {
+                Log.d("Location", "Changed");
+                loca[sample] = location;
+                sample++;
+                sample=sample%100;
+
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
     }
+
+    public void gpsStart() {
+        Log.i("Gps Status :", "Running");
+        try
+        {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, locationListener);
+
+        } catch (SecurityException e) {
+
+        }
+
+    }
+
+    public void gpsStop() {
+           try {
+               Log.i("Gps Status :", "Stoped");
+               locationManager.removeUpdates(locationListener);
+           }
+           catch (SecurityException e) {
+
+           }
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
