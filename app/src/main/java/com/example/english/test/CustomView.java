@@ -3,7 +3,9 @@ package com.example.english.test;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -38,7 +40,12 @@ public class CustomView extends View {
         RecPaint.setStyle(Paint.Style.FILL);
         RecPaint.setAntiAlias(true);
         RecPaint.setColor(RecColor);
-        canvas.drawRect(0, 0, viewWidth,viewHeight, RecPaint);
+        canvas.drawRect(0, 0, viewWidth, viewHeight, RecPaint);
+
+        RecPaint.setColor(Color.parseColor("#FFFFFF"));
+
+        for (int i=1;i<7;i++)
+            canvas.drawLine(0,i*viewHeight/7,viewWidth,i*viewHeight/7,RecPaint);
 
 
 
