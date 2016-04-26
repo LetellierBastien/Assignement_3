@@ -16,22 +16,28 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends Activity {
 
     Button buttonStart;
-    TextView txt2, txt3,txt4;
+    TextView txt1,txt2, txt3,txt4;
     private boolean started=false;
     LocationManager locationManager;
     LocationListener locationListener;
     ArrayList<Location> loca = new ArrayList<Location>();
     CustomView cstVw;
-    int call=0;
+    private Timer timer;
+    private int call=0;
+    private int time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txt1 = (TextView) findViewById(R.id.txt1);
+
         txt2 = (TextView) findViewById(R.id.txt2);
         txt3 = (TextView) findViewById(R.id.txt3);
         txt4 = (TextView) findViewById(R.id.txt4);
@@ -74,10 +80,8 @@ public class MainActivity extends Activity {
                     x = x+loca.get(i).getSpeed();
 
                 x=x/loca.size();
-                //txt2.setText("Current Speed: " + location.getSpeed()*3.6 + " Km/h");
-                //txt3.setText("Average Speed: " + x*3.6 + " Km/h");
-                //txt4.setText("Overall Time " + call + "s");
-                call++;
+                txt2.setText("Current Speed: " + location.getSpeed()*3.6 + " Km/h");
+                txt3.setText("Average Speed: " + x*3.6 + " Km/h");
 
             }
 
@@ -90,10 +94,11 @@ public class MainActivity extends Activity {
     }
 
     public void gpsStart() {
-        Log.i("Gps Status :", "Running");
         try
         {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+            txt1.setText("GPS Actived");
+            timerOn();
 
         } catch (SecurityException e) {
 
@@ -103,8 +108,9 @@ public class MainActivity extends Activity {
 
     public void gpsStop() {
            try {
-               Log.i("Gps Status :", "Stoped");
                locationManager.removeUpdates(locationListener);
+               txt1.setText("GPS inactive");
+               timer.cancel();
            }
            catch (SecurityException e) {
 
@@ -112,6 +118,22 @@ public class MainActivity extends Activity {
     }
 
 
+    private void timerOn()
+    {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        txt4.setText("Overall Time " + call + "s");
+                        call++;
+                    }
+                });
+            }
+        }, 0, 1000);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
